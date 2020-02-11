@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="com.bawei.dao.ApplicantDao">
+ 	<select id="listApplicant" resultType="com.bawei.entity.Applicant">
+		select a.*,b.score,c.id as ids,c.name as names,require_edu,require_degree,intro from cctv_applicant a LEFT JOIN cctv_score b on a.id=b.aid LEFT JOIN cctv_job c on b.jid=c.id
+ 		<if test="id != '' and id != null">
+ 			where a.id = #{id}
+ 		</if>
+ 		<if test="score != null and score != ''">
+ 			where b.score >= #{score}
+ 		</if>
+ 		<if test="edu != null and edu != ''">
+ 			where a.edu = #{edu}
+ 		</if>
+ 	</select>
+ 	<insert id="addApplicant">
+ 		insert into cctv_applicant values(0,#{name},#{gender},#{birthday},#{college},#{major},#{edu},#{degree},NOW())
+ 	</insert>
+ 	<select id="listjob" resultType="com.bawei.entity.Applicant">
+ 		select * from cctv_job
+ 	</select>
+ 	<insert id="addscore">
+ 		insert into cctv_score values(0,#{aid},#{jid},#{score})
+ 	</insert>
+ </mapper>
